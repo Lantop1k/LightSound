@@ -246,7 +246,4 @@ def serve_audio(filename):
 # RUN
 # ===========================
 if __name__ == '__main__':
-    print("\nPIANO IS READY!")
-    print("Go to: http://127.0.0.1:5000/drawing2audio")
-    print("Draw with any color → you will hear your real piano!\n")
-    app.run(host='127.0.0.1', port=5000, debug=False)
+    app.run()
