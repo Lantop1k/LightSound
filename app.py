@@ -101,6 +101,7 @@ def load_samples():
             print(f"Error A{i}.ogg: {e}")
     print(f"Loaded {count}/51 piano samples")
 
+load_samples()
 # ===========================
 # Find closest color (with tolerance)
 # ===========================
