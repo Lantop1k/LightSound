@@ -236,7 +236,8 @@ def submit():
     total_sec = len(final_audio) / SAMPLE_RATE
     print(f"SUCCESS! {len(notes)} note(s), {total_sec:.2f} seconds → {filename}\n")
 
-   return jsonify({"url": f"/audio/{filename}"})
+        return jsonify({"url": f"/audio/{filename}"})
+
 
 # Change the last route (the one that serves audio) to this:
 @app.route('/audio/<path:filename>')
