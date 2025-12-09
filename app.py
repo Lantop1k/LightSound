@@ -19,7 +19,7 @@ dash_app.layout = html.Div([html.H3("Piano Ready!")])
 # ===========================
 # SETTINGS
 # ===========================
-OUTPUT_DIR = "static/audio"
+OUTPUT_DIR = "/tmp"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 SAMPLE_RATE = 44100
 DURATION_PER_STEP = 120 / 1000  # 120ms = natural piano feel
@@ -82,25 +82,24 @@ COLOR_LIST = [
     (255, 255, 51),   # 51 → A51.ogg (bright yellow)
 ]
 
-# Load all A1.ogg to A51.ogg
+# Find this function "load_samples()" and replace the whole thing with this:
 def load_samples():
     count = 0
+    sample_folder = os.path.join(os.path.dirname(__file__), "samples")
     for i in range(1, 52):
-        path = f"static/audio/A{i}.ogg"
+        path = os.path.join(sample_folder, f"A{i}.ogg")
         if not os.path.exists(path):
             print(f"Missing A{i}.ogg")
             continue
         try:
             audio = AudioSegment.from_ogg(path).set_frame_rate(SAMPLE_RATE).set_channels(1)
             samples = np.array(audio.get_array_of_samples(), dtype=np.float32)
-            samples /= 32768.0  # normalize
+            samples /= 32768.0
             PIANO_SAMPLES[i] = samples
             count += 1
         except Exception as e:
             print(f"Error A{i}.ogg: {e}")
     print(f"Loaded {count}/51 piano samples")
-
-load_samples()
 
 # ===========================
 # Find closest color (with tolerance)
@@ -236,11 +235,12 @@ def submit():
     total_sec = len(final_audio) / SAMPLE_RATE
     print(f"SUCCESS! {len(notes)} note(s), {total_sec:.2f} seconds → {filename}\n")
 
-    return jsonify({"url": f"/static/audio/{filename}"})
+   return jsonify({"url": f"/audio/{filename}"})
 
-@app.route('/static/audio/<path:filename>')
+# Change the last route (the one that serves audio) to this:
+@app.route('/audio/<path:filename>')
 def serve_audio(filename):
-    return send_from_directory(OUTPUT_DIR, filename)
+    return send_from_directory("/tmp", filename)
 
 # ===========================
 # RUN
