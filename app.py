@@ -231,14 +231,15 @@ def submit():
     final_audio = np.concatenate(segments)
     final_audio = np.clip(final_audio, -1.0, 1.0)
     audio_i16 = np.int16(final_audio * 32767)
-
     filename = f"piano_{int(time.time()*1000)}.wav"
-    write_wav(os.path.join(OUTPUT_DIR, filename), SAMPLE_RATE, audio_i16)
-
+    
+    # FIXED LINE:
+    wavfile.write(os.path.join(OUTPUT_DIR, filename), SAMPLE_RATE, audio_i16)
+    
     total_sec = len(final_audio) / SAMPLE_RATE
     print(f"SUCCESS! {len(notes)} note(s), {total_sec:.2f} seconds → {filename}\n")
-
     return jsonify({"url": f"/static/audio/{filename}"})
+
 
 @app.route('/static/audio/<path:filename>')
 def serve_audio(filename):
