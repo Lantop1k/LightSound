@@ -6,7 +6,6 @@ python-docx
 pypdf2
 pdfplumber
 sounddevice
-pydub
 dash
 pandas
 plotly==5.18.0
@@ -14,4 +13,5 @@ setuptools
 Pillow
 imageio
 ffmpeg-python
+
 
