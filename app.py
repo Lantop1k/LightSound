@@ -247,6 +247,9 @@ def serve_audio(filename):
 # ===========================
 # RUN
 # ===========================
+# ===========================
+# RUN (for local only)
+# ===========================
 if __name__ == '__main__':
     print("\nPIANO IS READY!")
     print("Go to: http://127.0.0.1:5000/drawing2audio")
