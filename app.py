@@ -4,9 +4,9 @@ import base64
 import numpy as np
 from io import BytesIO
 from PIL import Image
-from scipy.io.wavfile import write as write_wav
+from scipy.io import wavfile
 from flask import Flask, render_template, request, jsonify, send_from_directory
-from pydub import AudioSegment
+# from pydub import AudioSegment 
 from dash import Dash, html
 
 app = Flask(__name__)
@@ -86,18 +86,20 @@ COLOR_LIST = [
 def load_samples():
     count = 0
     for i in range(1, 52):
-        path = f"static/audio/A{i}.ogg"
+        path = f"static/audio/A{i}.wav"   # ← now .wav instead of .ogg
         if not os.path.exists(path):
-            print(f"Missing A{i}.ogg")
+            print(f"Missing A{i}.wav")
             continue
         try:
-            audio = AudioSegment.from_ogg(path).set_frame_rate(SAMPLE_RATE).set_channels(1)
-            samples = np.array(audio.get_array_of_samples(), dtype=np.float32)
-            samples /= 32768.0  # normalize
+            sample_rate, data = wavfile.read(path)
+            # Make it mono and float32
+            if len(data.shape) > 1:
+                data = data.mean(axis=1)  # stereo → mono
+            samples = data.astype(np.float32) / 32768.0   # normalize
             PIANO_SAMPLES[i] = samples
             count += 1
         except Exception as e:
-            print(f"Error A{i}.ogg: {e}")
+            print(f"Error loading A{i}.wav: {e}")
     print(f"Loaded {count}/51 piano samples")
 
 load_samples()
