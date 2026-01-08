@@ -63,4 +63,4 @@ jobs:
         with:
           app-name: 'multimediaconverter'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9E9EE4F6FD3E4649BED21CD1881D4B33 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_28B3A483CB1A47C2AB005708FA2854EA }}
